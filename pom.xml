@@ -55,7 +55,7 @@
     <aproxVersion>0.19.2</aproxVersion>
     <version.jboss.maven.plugin>7.5.Final</version.jboss.maven.plugin>
     <version.jboss.bom>1.0.7.Final</version.jboss.bom>
-    <version.junit>4.11</version.junit>
+    <version.junit>4.12</version.junit>
     <version.assertj-core>1.7.0</version.assertj-core>
     <version.mockito-all>1.10.8</version.mockito-all>
     <version.catch-exception>1.2.0</version.catch-exception>
@@ -360,7 +360,7 @@
       <dependency>
         <groupId>org.jboss.arquillian</groupId>
         <artifactId>arquillian-bom</artifactId>
-        <version>1.1.5.Final</version>
+        <version>1.1.8.Final-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -851,7 +851,7 @@
                 <Scm-Url>${project.scm.url}</Scm-Url>
                 <Scm-Connection>${project.scm.connection}</Scm-Connection>
                 <Scm-Revision>${buildNumber}</Scm-Revision>
-                <Build-Timestamp>${build.datetime}</Build-Timestamp>
+                <Build-Timestamp>${datetime}</Build-Timestamp>
               </manifestEntries>
             </archive>
             <version>6</version>
@@ -884,7 +884,7 @@
                 <Scm-Url>${project.scm.url}</Scm-Url>
                 <Scm-Connection>${project.scm.connection}</Scm-Connection>
                 <Scm-Revision>${buildNumber}</Scm-Revision>
-                <Build-Timestamp>${build.datetime}</Build-Timestamp>
+                <Build-Timestamp>${datetime}</Build-Timestamp>
               </manifestEntries>
             </archive>
           </configuration>
@@ -1170,6 +1170,13 @@
             </configuration>
           </execution>
         </executions>
+        <dependencies>
+	    <dependency>
+		<groupId>org.apache.maven.surefire</groupId>
+		<artifactId>surefire-junit47</artifactId>
+		<version>2.18.1</version>
+	    </dependency>
+	</dependencies>
       </plugin>
     </plugins>
   </build>
@@ -1182,6 +1189,14 @@
       <id>bintray</id>
       <name>bintray</name>
       <url>http://dl.bintray.com/rnc/maven</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>jboss-snapshots</id>
+      <name>jboss-snapshots</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/snapshots</url>
     </repository>
   </repositories>
 

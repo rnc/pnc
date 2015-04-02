@@ -8,10 +8,13 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.pnc.auth.AuthenticationProvider;
 import org.jboss.pnc.auth.ExternalAuthentication;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
+import org.jboss.arquillian.junit.suite.BelongsTo;
 import org.jboss.pnc.common.util.IoUtils;
 import org.jboss.pnc.integration.Utils.AuthResource;
 import org.jboss.pnc.integration.assertions.ResponseAssertion;
-import org.jboss.pnc.integration.deployments.Deployments;
+import org.jboss.pnc.integration.deployments.RestDeployment;
 import org.jboss.pnc.integration.matchers.JsonMatcher;
 import org.jboss.pnc.integration.template.JsonTemplateBuilder;
 import org.jboss.pnc.rest.endpoint.BuildConfigurationEndpoint;
@@ -39,6 +42,7 @@ import static org.jboss.pnc.integration.env.IntegrationTestEnv.getHttpPort;
 
 @RunWith(Arquillian.class)
 @Category(ContainerTest.class)
+@BelongsTo(RestDeployment.class)
 public class BuildConfigurationRestTest {
 
     public static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -66,19 +70,6 @@ public class BuildConfigurationRestTest {
     
     private static AuthenticationProvider authProvider;
     private static String access_token =  "no-auth";
-
-    @Deployment(testable = false)
-    public static EnterpriseArchive deploy() {
-        EnterpriseArchive enterpriseArchive = Deployments.baseEar();
-
-        WebArchive restWar = enterpriseArchive.getAsType(WebArchive.class, "/pnc-rest.war");
-        restWar.addClass(BuildConfigurationProvider.class);
-        restWar.addClass(BuildConfigurationEndpoint.class);
-        restWar.addClass(BuildConfigurationRest.class);
-
-        logger.info(enterpriseArchive.toString(true));
-        return enterpriseArchive;
-    }
 
     @BeforeClass
     public static void setupAuth() throws IOException {

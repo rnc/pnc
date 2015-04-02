@@ -2,6 +2,7 @@ package org.jboss.pnc.integration.assertions;
 
 import com.jayway.restassured.response.Response;
 import org.assertj.core.api.AbstractAssert;
+import org.junit.Assert;
 
 import java.util.regex.Pattern;
 
@@ -20,17 +21,17 @@ public class ResponseAssertion extends AbstractAssert<ResponseAssertion, Respons
     }
 
     public ResponseAssertion hasStatus(int httpStatus) {
-        assertEquals(httpStatus, actual.statusCode());
+        Assert.assertEquals(httpStatus, actual.statusCode());
         return this;
     }
 
     public ResponseAssertion hasJsonValueEqual(String jsonKey, int value) {
-        assertEquals(value, actual.body().jsonPath().getInt(jsonKey));
+        Assert.assertEquals(value, actual.body().jsonPath().getInt(jsonKey));
         return this;
     }
 
     public ResponseAssertion hasJsonValueEqual(String jsonKey, String value) {
-        assertEquals(value, actual.body().jsonPath().getString(jsonKey));
+        Assert.assertEquals(value, actual.body().jsonPath().getString(jsonKey));
         return this;
     }
 

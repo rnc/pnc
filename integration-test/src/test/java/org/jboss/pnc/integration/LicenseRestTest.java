@@ -2,18 +2,14 @@ package org.jboss.pnc.integration;
 
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
-import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
+import org.jboss.arquillian.junit.suite.BelongsTo;
 import org.jboss.pnc.integration.Utils.ResponseUtils;
 import org.jboss.pnc.integration.assertions.ResponseAssertion;
-import org.jboss.pnc.integration.deployments.Deployments;
-import org.jboss.pnc.rest.endpoint.LicenseEndpoint;
-import org.jboss.pnc.rest.provider.LicenseProvider;
+import org.jboss.pnc.integration.deployments.RestDeployment;
 import org.jboss.pnc.rest.restmodel.LicenseRest;
 import org.jboss.pnc.test.category.ContainerTest;
-import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -23,13 +19,14 @@ import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
 
 import static com.jayway.restassured.RestAssured.given;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.jboss.pnc.integration.Utils.JsonUtils.fromJson;
 import static org.jboss.pnc.integration.Utils.JsonUtils.toJson;
 import static org.jboss.pnc.integration.env.IntegrationTestEnv.getHttpPort;
 
 @RunWith(Arquillian.class)
 @Category(ContainerTest.class)
+@BelongsTo(RestDeployment.class)
 public class LicenseRestTest {
 
     private static final String LICENSE_REST_ENDPOINT = "/pnc-rest/rest/license/";
@@ -38,19 +35,6 @@ public class LicenseRestTest {
     public static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private static Integer licenseId;
-
-    @Deployment(testable = false)
-    public static EnterpriseArchive deploy() {
-        EnterpriseArchive enterpriseArchive = Deployments.baseEar();
-
-        WebArchive restWar = enterpriseArchive.getAsType(WebArchive.class, "/pnc-rest.war");
-        restWar.addClass(LicenseProvider.class);
-        restWar.addClass(LicenseEndpoint.class);
-        restWar.addClass(LicenseRest.class);
-
-        logger.info(enterpriseArchive.toString(true));
-        return enterpriseArchive;
-    }
 
     @Test
     @InSequence(0)

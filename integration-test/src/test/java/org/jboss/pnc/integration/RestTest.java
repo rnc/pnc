@@ -7,10 +7,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 
+import com.jayway.restassured.http.ContentType;
+import com.jayway.restassured.response.Response;
 import org.assertj.core.api.Assertions;
-import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
+import org.jboss.arquillian.junit.suite.BelongsTo;
 import org.jboss.pnc.auth.AuthenticationProvider;
 import org.jboss.pnc.auth.ExternalAuthentication;
 import org.jboss.pnc.common.util.IoUtils;
@@ -19,6 +21,9 @@ import org.jboss.pnc.integration.deployments.Deployments;
 import org.jboss.pnc.integration.matchers.JsonMatcher;
 import org.jboss.pnc.test.category.ContainerTest;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
+import org.jboss.pnc.integration.deployments.RestDeployment;
+import org.jboss.pnc.integration.matchers.JsonMatcher;
+import org.jboss.pnc.test.category.ContainerTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -31,6 +36,7 @@ import com.jayway.restassured.response.Response;
 
 @RunWith(Arquillian.class)
 @Category(ContainerTest.class)
+@BelongsTo(RestDeployment.class)
 public class RestTest {
 
     public static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -51,13 +57,6 @@ public class RestTest {
     private static String access_token =  "no-auth";
 
 
-    @Deployment(testable = false)
-    public static EnterpriseArchive deploy() {
-        EnterpriseArchive enterpriseArchive = Deployments.baseEar();
-        logger.info(enterpriseArchive.toString(true));
-        return enterpriseArchive;
-    }
-    
     @BeforeClass
     public static void setupAuth() throws IOException {
         if(AuthResource.authEnabled()) {

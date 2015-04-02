@@ -8,12 +8,10 @@ import org.jboss.pnc.datastore.limits.RSQLPageLimitAndSortingProducer;
 import org.jboss.pnc.datastore.repositories.BuildRecordRepository;
 import org.jboss.pnc.datastore.repositories.BuildRecordSetRepository;
 import org.jboss.pnc.datastore.repositories.ProductMilestoneRepository;
-import org.jboss.pnc.datastore.repositories.ProductVersionRepository;
 import org.jboss.pnc.integration.deployments.Deployments;
 import org.jboss.pnc.model.BuildRecord;
 import org.jboss.pnc.model.BuildRecordSet;
 import org.jboss.pnc.model.ProductMilestone;
-import org.jboss.pnc.model.ProductVersion;
 import org.jboss.pnc.rest.provider.BuildRecordSetProvider;
 import org.jboss.pnc.rest.restmodel.BuildRecordSetRest;
 import org.jboss.pnc.test.category.ContainerTest;
@@ -26,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
