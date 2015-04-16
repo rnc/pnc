@@ -2,18 +2,24 @@ package org.jboss.pnc.integration;
 
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.jboss.arquillian.junit.suite.BelongsTo;
 import org.jboss.pnc.auth.AuthenticationProvider;
 import org.jboss.pnc.auth.ExternalAuthentication;
 import org.jboss.pnc.integration.Utils.AuthResource;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
-import org.jboss.arquillian.junit.suite.BelongsTo;
 import org.jboss.pnc.integration.assertions.ResponseAssertion;
-import org.jboss.pnc.integration.deployments.RestDeployment;
+import org.jboss.pnc.integration.deployments.Deployments;
+import org.jboss.pnc.rest.endpoint.BuildConfigurationEndpoint;
+import org.jboss.pnc.rest.endpoint.BuildRecordEndpoint;
+import org.jboss.pnc.rest.provider.BuildConfigurationProvider;
+import org.jboss.pnc.rest.provider.BuildRecordProvider;
+import org.jboss.pnc.rest.restmodel.BuildConfigurationRest;
+import org.jboss.pnc.rest.restmodel.BuildRecordRest;
 import org.jboss.pnc.test.category.ContainerTest;
+import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -30,7 +36,6 @@ import static org.jboss.pnc.integration.env.IntegrationTestEnv.getHttpPort;
 
 @RunWith(Arquillian.class)
 @Category(ContainerTest.class)
-@BelongsTo(RestDeployment.class)
 public class BuildRecordRestTest {
 
     public static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -46,9 +51,26 @@ public class BuildRecordRestTest {
     private static int configurationId;
     private static String buildConfigurationName;
     private static int projectId;
-
+    
     private static AuthenticationProvider authProvider;
     private static String access_token =  "no-auth";
+    
+
+    @Deployment(testable = false)
+    public static EnterpriseArchive deploy() {
+        EnterpriseArchive enterpriseArchive = Deployments.baseEar();
+
+        WebArchive restWar = enterpriseArchive.getAsType(WebArchive.class, "/pnc-rest.war");
+        restWar.addClass(BuildConfigurationProvider.class);
+        restWar.addClass(BuildConfigurationEndpoint.class);
+        restWar.addClass(BuildConfigurationRest.class);
+        restWar.addClass(BuildRecordProvider.class);
+        restWar.addClass(BuildRecordEndpoint.class);
+        restWar.addClass(BuildRecordRest.class);
+
+        logger.info(enterpriseArchive.toString(true));
+        return enterpriseArchive;
+    }
 
     @BeforeClass
     public static void setupAuth() throws IOException {
