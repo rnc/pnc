@@ -1115,7 +1115,7 @@
             <useReleaseProfile>false</useReleaseProfile>
             <addSchema>false</addSchema>
             <arguments>-Prelease -DskipTests=${skipTests} -DpushChanges=${pushChanges}</arguments>
-            <completionGoals>scm:add scm:checkin -DpushChanges=${pushChanges}</completionGoals>
+            <preparationGoals>clean verify scm:add scm:checkin -DpushChanges=${pushChanges}</preparationGoals>
           </configuration>
         </plugin>
       <plugin>
