@@ -931,7 +931,7 @@
               </goals>
               <configuration>
                 <shortRevisionLength>8</shortRevisionLength>
-                <timestampFormat>{0,date,dd MMMM yyyy}</timestampFormat>
+                <timestampFormat>{0,time,short} {0,date,dd MMMM yyyy}</timestampFormat>
               </configuration>
             </execution>
           </executions>
